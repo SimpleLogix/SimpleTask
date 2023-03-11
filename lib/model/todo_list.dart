@@ -5,10 +5,11 @@ import 'package:taskmate/model/task.dart';
 class TodoList {
   String name;
   Color color;
+  IconData icon;
   List<Task> tasks;
 
   // Default Constructor
-  TodoList({required this.name, required this.color, required this.tasks});
+  TodoList({required this.name, required this.color, required this.icon, required this.tasks});
 
   // Json Constructor
   factory TodoList.fromJson(Map<String, dynamic> map) {
@@ -20,6 +21,7 @@ class TodoList {
     return TodoList(
       name: map['name'],
       color: Color(map['color']),
+      icon: IconData(map['icon']),
       tasks: tasks,
     );
   }
@@ -34,8 +36,8 @@ class TodoList {
     return {
       'name': name,
       'color': color.value,
+      'icon': icon.codePoint,
       'tasks': tasks,
     };
   }
-
 }
