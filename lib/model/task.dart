@@ -1,13 +1,15 @@
 class Task {
   String name;
   bool isDone;
+  bool isImportant;
 
-  Task({required this.name, required this.isDone});
+  Task({required this.name, required this.isDone, required this.isImportant});
 
   factory Task.fromJson(Map<String, dynamic> map) {
     return Task(
       name: map['name'],
-      isDone: map['isDone']
+      isDone: map['isDone'],
+      isImportant: map['isImportant'],
     );
   }
 
@@ -15,6 +17,7 @@ class Task {
     return {
       'name': name,
       'isDone': isDone,
+      'isImportant': isImportant,
     };
   }
 }
