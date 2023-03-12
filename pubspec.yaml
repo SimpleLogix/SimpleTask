@@ -40,6 +40,8 @@ dependencies:
   path_provider: ^2.0.13
   get: ^4.6.5
 
+  flutter_draggable_gridview: ^0.0.7
+
 
 dev_dependencies:
   flutter_test:

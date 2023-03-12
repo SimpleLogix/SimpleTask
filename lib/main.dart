@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/services/globals.dart';
 import 'package:taskmate/view/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -17,7 +19,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const  Scaffold(body: SafeArea(child: HomeScreen())),
+      home: const Scaffold(
+          backgroundColor: MyColors.bg,
+          body: SafeArea(
+            child: HomeScreen(),
+          )),
     );
   }
 }

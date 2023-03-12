@@ -7,4 +7,8 @@ class Profile extends GetxController {
   List<TodoList> todoLists;
 
   Profile({required this.todoLists});
+
+  factory Profile.empty() {
+    return Profile(todoLists: []);
+  } 
 }

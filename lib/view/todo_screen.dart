@@ -17,6 +17,7 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   Profile profile = Get.find<Profile>();
+  final controller = Get.find<PageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _TodoScreenState extends State<TodoScreen> {
     return Material(
       color: list.color,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
@@ -37,6 +38,17 @@ class _TodoScreenState extends State<TodoScreen> {
               )
             ],
           ),
+          IconButton(
+              onPressed: () {
+                controller.animateToPage(0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear);
+              },
+              icon: const Icon(
+                Icons.keyboard_arrow_left_rounded,
+                size: 48,
+                color: Colors.white,
+              )),
         ],
       ),
     );
