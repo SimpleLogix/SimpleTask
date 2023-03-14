@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/services/globals.dart';
-import 'package:taskmate/view/home_screen.dart';
+import 'package:taskmate/view/screens/connector.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,12 +17,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TaskMate',
       theme: ThemeData(
+        fontFamily: 'monospace',
         primarySwatch: Colors.blue,
       ),
       home: const Scaffold(
           backgroundColor: MyColors.bg,
+          resizeToAvoidBottomInset: false,
           body: SafeArea(
-            child: HomeScreen(),
+            bottom: false,
+            child: Connector(),
           )),
     );
   }

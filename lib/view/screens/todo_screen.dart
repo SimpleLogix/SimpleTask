@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:taskmate/model/todo_list.dart';
 import 'package:taskmate/services/globals.dart';
 
-import '../model/profile.dart';
+import '../../model/profile.dart';
 
 /// displays the selected to do list but also has access to the other todo's in a
 /// page view for easy seamless swapping between pages

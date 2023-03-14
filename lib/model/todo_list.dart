@@ -9,7 +9,11 @@ class TodoList {
   List<Task> tasks;
 
   // Default Constructor
-  TodoList({required this.name, required this.color, required this.icon, required this.tasks});
+  TodoList(
+      {required this.name,
+      required this.color,
+      required this.icon,
+      required this.tasks});
 
   // Json Constructor
   factory TodoList.fromJson(Map<String, dynamic> map) {
@@ -21,7 +25,7 @@ class TodoList {
     return TodoList(
       name: map['name'],
       color: Color(map['color']),
-      icon: IconData(map['icon']),
+      icon: IconData(map['icon'], fontFamily: 'MaterialIcons'),
       tasks: tasks,
     );
   }

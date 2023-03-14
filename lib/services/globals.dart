@@ -8,7 +8,9 @@ class MyColors {
   static const Color bg = Silver;
   static const Color main = Color(0xff2980B9);
   static const Color lightTxt = Color(0xffECF0F1);
-  static const Color darkTxt = lightTxt;
+  static const Color darkTxt = Colors.black87;
+
+  static const Color uiButton = Colors.black54;
 
   static const Color transparent = Color(0x00ffffff);
 
@@ -40,70 +42,60 @@ class MyColors {
 }
 
 class MyWidgets {
-  static List<TodoList> sampleList = [
-    TodoList(
-      name: "Health",
-      color: MyColors.Alizarin,
-      icon: Icons.heart_broken,
-      tasks: [
-        Task(name: "name", isDone: false, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
-    TodoList(
-      name: "Life",
-      color: MyColors.SunFlower,
-      icon: Icons.star_border_purple500_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
-    TodoList(
-      name: "Work",
-      color: MyColors.Nephritis,
-      icon: Icons.cases_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
-    TodoList(
-      name: "Shopping List",
-      color: MyColors.Pumpkin,
-      icon: Icons.shopping_cart_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
-    TodoList(
-      name: "Home & Yard & School Improvements",
-      color: MyColors.Amethyst,
-      icon: Icons.house_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true),
-        Task(name: "name", isDone: false, isImportant: true),
-      ],
-    ),
-    TodoList(
-      name: "Projects",
-      color: MyColors.BelizeHole,
-      icon: Icons.rocket_launch_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
-    TodoList(
-      name: "School",
-      color: MyColors.MidnightBlue,
-      icon: Icons.school_outlined,
-      tasks: [
-        Task(name: "name", isDone: true, isImportant: false),
-        Task(name: "name", isDone: true, isImportant: true)
-      ],
-    ),
+  static List<Color> colorList = [
+    MyColors.Turquoise,
+    MyColors.GreenSea,
+    MyColors.Emerald,
+    MyColors.Nephritis,
+    MyColors.BelizeHole,
+    MyColors.SteelBlue,
+    MyColors.Amethyst,
+    MyColors.Wisteria,
+    MyColors.WetAsphalt,
+    MyColors.MidnightBlue,
+    MyColors.SunFlower,
+    MyColors.Orange,
+    MyColors.Carrot,
+    MyColors.Pumpkin,
+    MyColors.Alizarin,
+    MyColors.Pomegranate,
+    MyColors.Clouds,
+    MyColors.Silver,
+    MyColors.Concrete,
+    MyColors.Asbestos,
+    MyColors.MidnightBlue,
+    MyColors.SunFlower,
+    MyColors.Orange,
+    MyColors.Nephritis,
+    MyColors.BelizeHole,
+    MyColors.SteelBlue,
+    MyColors.Amethyst,
   ];
+  static List<Widget> colors = List.generate(
+    colorList.length,
+    (index) => DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorList[index],
+        shape: BoxShape.circle,
+      ),
+      child: const SizedBox(
+        width: 5,
+        height: 5,
+      ),
+    ),
+  );
+
+  static List<IconData> iconsData = [
+    Icons.person,
+    Icons.rocket_launch_outlined,
+    Icons.house_outlined,
+    Icons.shopping_cart_outlined,
+    Icons.star_border_outlined,
+    Icons.favorite_border_rounded,
+    Icons.school_outlined,
+    Icons.work_outline_rounded,
+    Icons.music_note_rounded
+  ];
+  static List<Icon> icons =
+      List.generate(iconsData.length, (index) => Icon(iconsData[index]));
 }

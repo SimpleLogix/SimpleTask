@@ -53,6 +53,25 @@ class MyServices {
     }
   }
 
+  static void removeTodoList(TodoList list) async {
+    // connect to shared prefs
+    final prefs = await SharedPreferences.getInstance();
+    // Find the local path of the directories
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+
+    // change shared prefs
+    final todoNames = prefs.getStringList("todoListNames");
+    if (todoNames != null && todoNames.isNotEmpty) {
+      todoNames.remove(list.name);
+      prefs.setStringList("todoListNames", todoNames);
+    }
+
+    // remove doc from path
+    File file = File('$path/${list.name}.json');
+    file.delete();
+  }
+
   //! debug command to clear all files and prefs
   static void clear() async {
     // ref

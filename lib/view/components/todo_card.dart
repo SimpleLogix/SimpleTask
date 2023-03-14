@@ -6,9 +6,17 @@ import 'package:taskmate/model/todo_list.dart';
 import 'package:taskmate/services/globals.dart';
 
 class TodoCard extends StatefulWidget {
+  bool isEditModeOn = false;
   final TodoList list;
   final VoidCallback onLongPress;
-  const TodoCard({super.key, required this.list, required this.onLongPress});
+  final VoidCallback onRemoveTodo;
+  TodoCard({
+    super.key,
+    required this.list,
+    required this.onLongPress,
+    required this.onRemoveTodo,
+    required this.isEditModeOn,
+  });
 
   @override
   State<TodoCard> createState() => _TodoCardState();
@@ -29,16 +37,18 @@ class _TodoCardState extends State<TodoCard> {
 
     return InkWell(
       onTap: () {
-        // get user todo's and find index of selected todo
-        Profile user = Get.find<Profile>();
-        final int index = user.todoLists.indexOf(list) + 1;
-        const Duration duration = Duration(milliseconds: 500);
+        if (!widget.isEditModeOn) {
+          // get user todo's and find index of selected todo
+          Profile user = Get.find<Profile>();
+          final int index = user.todoLists.indexOf(list) + 1;
+          const Duration duration = Duration(milliseconds: 500);
 
-        controller.animateToPage(
-          index,
-          duration: duration,
-          curve: (index < 3) ? Curves.easeIn : Curves.linear,
-        );
+          controller.animateToPage(
+            index,
+            duration: duration,
+            curve: (index < 3) ? Curves.easeIn : Curves.linear,
+          );
+        }
       },
       onLongPress: widget.onLongPress,
       highlightColor: MyColors.pressed,
@@ -88,9 +98,13 @@ class _TodoCardState extends State<TodoCard> {
                   ),
                   color: MyColors.badge,
                 ),
-                child: Icon(
-                  list.icon,
-                  color: MyColors.lightTxt,
+                child: IconButton(
+                  onPressed: widget.isEditModeOn? widget.onRemoveTodo : (){},
+                  icon: Icon(
+                    widget.isEditModeOn ? Icons.close_rounded : list.icon,
+                    color: MyColors.lightTxt,
+                    size: 18,
+                  ),
                 ),
               ),
               Container(
@@ -116,7 +130,7 @@ class _TodoCardState extends State<TodoCard> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -141,20 +155,22 @@ class _TodoCardState extends State<TodoCard> {
       }
     }
     for (String word in parsedWords) {
-      res.add(Flexible(
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: Text(
-            word,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: MyColors.lightTxt,
-              fontSize: 18,
-              fontFamily: 'monospace',
+      if (word.isNotEmpty) {
+        res.add(Flexible(
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Text(
+              word,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: MyColors.lightTxt,
+                fontSize: 18,
+                fontFamily: 'monospace',
+              ),
             ),
           ),
-        ),
-      ));
+        ));
+      }
     }
     return res;
   }
