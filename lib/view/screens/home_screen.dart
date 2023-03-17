@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_draggable_gridview/flutter_draggable_gridview.dart';
 import 'package:get/get.dart';
-import 'package:taskmate/model/todo_list.dart';
 import 'package:taskmate/services/globals.dart';
 import 'package:taskmate/services/service.dart';
 import 'package:taskmate/view/screens/add_todo_screen.dart';
 import 'package:taskmate/view/components/add_card.dart';
-import 'package:taskmate/view/components/shake_widget.dart';
 import 'package:taskmate/view/components/todo_card.dart';
-import 'package:taskmate/view/components/loading_screen.dart';
 import 'package:taskmate/view/screens/todo_screen.dart';
 
 import '../../model/profile.dart';
@@ -22,9 +19,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Profile profile = Get.find<Profile>();
-  bool isEditModeOn = false;
+  bool isDragged = false;
   late List<DraggableGridItem> draggableItems;
-  PageController controller = Get.put(PageController(initialPage: 1));
+  PageController controller = Get.put(PageController(initialPage: 0));
 
   @override
   Widget build(BuildContext context) {
@@ -32,47 +29,27 @@ class _HomeScreenState extends State<HomeScreen> {
     draggableItems = List.generate(
         profile.todoLists.length,
         (index) => DraggableGridItem(
-              isDraggable: isEditModeOn,
+              isDraggable: true,
+              dragCallback: (context, i) {
+                if (i != isDragged) {
+                  setState(() {
+                    isDragged = i;
+                  });
+                }
+              },
               child: Material(
-                key: Key(index.toString()),
                 color: MyColors.transparent,
-                child: isEditModeOn
-                    ?
-                    // To do card with shake widget on (edit mode: on)
-                    ShakeWidget(
-                        child: TodoCard(
-                          list: profile.todoLists[index],
-                          isEditModeOn: isEditModeOn,
-                          onRemoveTodo: () {
-                            setState(() {
-                              MyServices.removeTodoList(
-                                  profile.todoLists[index]);
-                              profile.todoLists.removeAt(index);
-                            });
-                            if (profile.todoLists.isEmpty) {
-                              isEditModeOn = false;
-                            }
-                          },
-                          onLongPress: () {
-                            setState(() {
-                              isEditModeOn = !isEditModeOn;
-                            });
-                          },
-                        ),
-                      )
-                    // To do card with no shake widget (edit mode: off)
-                    : TodoCard(
-                        list: profile.todoLists[index],
-                        isEditModeOn: isEditModeOn,
-                        onRemoveTodo: () {
-                          debugPrint("removed");
-                        },
-                        onLongPress: () {
-                          setState(() {
-                            isEditModeOn = !isEditModeOn;
-                          });
-                        },
-                      ),
+                child: TodoCard(
+                  list: profile.todoLists[index],
+                  isEditModeOn: false,
+                  onRemoveTodo: () {
+                    setState(() {
+                      MyServices.removeTodoList(profile.todoLists[index]);
+                      profile.todoLists.removeAt(index);
+                    });
+                  },
+                  onLongPress: () {},
+                ),
               ),
             ));
 
@@ -88,10 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }),
     );
     draggableItems.add(addCard);
-
-    //? This is the actual displayed screens/pages of the selected todo
-    List<Widget> todoPages = List.generate(profile.todoLists.length,
-        (index) => TodoScreen(list: profile.todoLists[index]));
 
     //? draggable grid view
     final gridView = DraggableGridViewBuilder(
@@ -118,27 +91,31 @@ class _HomeScreenState extends State<HomeScreen> {
           color: MyColors.bg,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              isEditModeOn
-                  ? Align(
-                      alignment: Alignment.topRight,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          setState(() {
-                            isEditModeOn = false;
-                          });
-                        },
-                        child: const Text("done"),
+              Expanded(child: gridView),
+              isDragged
+                  ? OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: MyColors.uiButton,
+                          shape: const StadiumBorder()),
+                      child: const Text(
+                        "done",
+                        style: TextStyle(color: MyColors.lightTxt),
                       ),
                     )
                   : const SizedBox.shrink(),
-              Expanded(child: gridView),
             ],
           ),
         ),
       )
     ];
+
     // add the todo's and add screen
+    //? This is the actual displayed screens/pages of the selected todo
+    List<Widget> todoPages = List.generate(profile.todoLists.length,
+        (index) => TodoScreen(list: profile.todoLists[index]));
     pages += todoPages;
     pages.add(AddTodoScreen(
       //? The reason for having the callback in the homescreen instead of
@@ -188,9 +165,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onDragAccept(
       List<DraggableGridItem> list, int beforeIndex, int afterIndex) {
-    debugPrint('onDragAccept: $beforeIndex -> $afterIndex');
-    //TODO: set a list of widget before homescreen is built and then set state here updating the order of the
-    //* widgets and saving the order i the user profile and settings and rebuild the homescreen with an updated pageview
-    debugPrint(list[1].child.key.toString());
+    setState(() {
+      profile.todoLists = moveItem(profile.todoLists, beforeIndex, afterIndex);
+      MyServices.updateTodoListOrder(profile.todoLists);
+    });
+  }
+
+  List<T> moveItem<T>(List<T> list, int oldIndex, int newIndex) {
+    final item = list[oldIndex];
+    list.removeAt(oldIndex);
+    list.insert(newIndex, item);
+    return list;
   }
 }

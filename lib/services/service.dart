@@ -82,6 +82,13 @@ class MyServices {
     file.writeAsStringSync(jsonString);
   }
 
+  static void updateTodoListOrder(List<TodoList> lists) async {
+    // connect to shared prefs
+    final prefs = await SharedPreferences.getInstance();
+    final names = lists.map((list) => list.name).toList();
+    prefs.setStringList("todoListNames", names);
+  }
+
   //! debug command to clear all files and prefs
   static void clear() async {
     // ref

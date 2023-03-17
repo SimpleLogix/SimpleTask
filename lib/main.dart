@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TaskMate',
       theme: ThemeData(
+        useMaterial3: true,
         fontFamily: 'roboto',
         primarySwatch: Colors.blue,
       ),
