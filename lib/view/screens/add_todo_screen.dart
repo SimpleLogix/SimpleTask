@@ -148,7 +148,17 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     ),
                     TextFormField(
                       controller: inputController,
-                      onFieldSubmitted: (val) {},
+                      onFieldSubmitted: (val) {
+                        setState(() {
+                          //? checking all the list names and if the user entered a unique list name
+                          if (listNames
+                              .contains(inputController.text.toString())) {
+                            isUnique = false;
+                          } else {
+                            isUnique = true;
+                          }
+                        });
+                      },
                       decoration: InputDecoration(
                         fillColor: MyWidgets.colorList[colorIdx],
                         border: borderDeco,
@@ -261,7 +271,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     style: TextStyle(
                         fontSize: 36,
                         color: MyColors.lightTxt,
-                        fontFamily: 'monospace'),
+                        fontFamily: 'roboto'),
                   ),
                 ),
               ),

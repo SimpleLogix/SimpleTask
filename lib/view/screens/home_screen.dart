@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Profile profile = Get.find<Profile>();
   bool isEditModeOn = false;
   late List<DraggableGridItem> draggableItems;
-  PageController controller = Get.put(PageController(initialPage: 0));
+  PageController controller = Get.put(PageController(initialPage: 1));
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
     return PageView(
       controller: controller,
+      scrollDirection: Axis.horizontal,
       children: pages,
     );
   }

@@ -72,6 +72,16 @@ class MyServices {
     file.delete();
   }
 
+  static void updateTodoList(TodoList list) async {
+    // Find the local path of the directories
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    // encode to do list and write to file
+    final jsonString = json.encode(list.toMap());
+    File file = File('$path/${list.name}.json');
+    file.writeAsStringSync(jsonString);
+  }
+
   //! debug command to clear all files and prefs
   static void clear() async {
     // ref

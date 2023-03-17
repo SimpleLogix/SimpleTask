@@ -41,6 +41,7 @@ dependencies:
   get: ^4.6.5
 
   flutter_draggable_gridview: ^0.0.7
+  badges: ^3.0.2
 
 
 dev_dependencies:

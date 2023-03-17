@@ -4,6 +4,7 @@ import 'package:taskmate/model/profile.dart';
 import 'package:taskmate/model/task.dart';
 import 'package:taskmate/model/todo_list.dart';
 import 'package:taskmate/services/globals.dart';
+import 'package:badges/badges.dart' as badges;
 
 class TodoCard extends StatefulWidget {
   bool isEditModeOn = false;
@@ -35,103 +36,112 @@ class _TodoCardState extends State<TodoCard> {
       }
     }
 
-    return InkWell(
-      onTap: () {
-        if (!widget.isEditModeOn) {
-          // get user todo's and find index of selected todo
-          Profile user = Get.find<Profile>();
-          final int index = user.todoLists.indexOf(list) + 1;
-          const Duration duration = Duration(milliseconds: 500);
+    return badges.Badge(
+      badgeContent: Icon(Icons.remove_rounded),
+      onTap: widget.onRemoveTodo,
+      showBadge: widget.isEditModeOn,
+      position: badges.BadgePosition.topEnd(end: -5, top: -5),
+      badgeStyle: const badges.BadgeStyle(
+        badgeColor: MyColors.badge,
+        padding: EdgeInsets.all(6),
+      ),
+      child: InkWell(
+        onTap: () {
+          if (!widget.isEditModeOn) {
+            // get user todo's and find index of selected todo
+            Profile user = Get.find<Profile>();
+            final int index = user.todoLists.indexOf(list) + 1;
+            const Duration duration = Duration(milliseconds: 500);
 
-          controller.animateToPage(
-            index,
-            duration: duration,
-            curve: (index < 3) ? Curves.easeIn : Curves.linear,
-          );
-        }
-      },
-      onLongPress: widget.onLongPress,
-      highlightColor: MyColors.pressed,
-      borderRadius: const BorderRadius.all(Radius.circular(18)),
-      child: Ink(
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          elevation: 25,
-          shadowColor: Colors.black,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(18))),
-          child: Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                  child: Container(
-                    color: MyColors.badge,
-                    padding: const EdgeInsets.all(0.1),
-                    child: Card(
-                      elevation: 50,
-                      shadowColor: Colors.black,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12))),
-                      color: list.color,
-                      child: Center(
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(15, 15, 15, 45),
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: splitText(list.name))),
+            controller.animateToPage(
+              index,
+              duration: duration,
+              curve: (index < 3) ? Curves.easeIn : Curves.linear,
+            );
+          }
+        },
+        onLongPress: widget.onLongPress,
+        highlightColor: MyColors.pressed,
+        borderRadius: const BorderRadius.all(Radius.circular(18)),
+        child: Ink(
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            elevation: 25,
+            shadowColor: Colors.black,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(18))),
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    child: Container(
+                      color: MyColors.badge,
+                      padding: const EdgeInsets.all(0.1),
+                      child: Card(
+                        elevation: 50,
+                        shadowColor: Colors.black,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        color: list.color,
+                        child: Center(
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 15, 15, 45),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: splitText(list.name))),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                width: 45,
-                height: 45,
-                margin: const EdgeInsets.fromLTRB(0, 0, 4, 4),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
+                Container(
+                  width: 45,
+                  height: 45,
+                  margin: const EdgeInsets.fromLTRB(0, 0, 4, 4),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                    color: MyColors.badge,
                   ),
-                  color: MyColors.badge,
-                ),
-                child: IconButton(
-                  onPressed: widget.isEditModeOn? widget.onRemoveTodo : (){},
-                  icon: Icon(
-                    widget.isEditModeOn ? Icons.close_rounded : list.icon,
+                  child: Icon(
+                    list.icon,
                     color: MyColors.lightTxt,
                     size: 18,
                   ),
                 ),
-              ),
-              Container(
-                height: 10,
-                width: 200,
-                margin: const EdgeInsets.fromLTRB(4, 0, 48, 4),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(12),
+                Container(
+                  height: 10,
+                  width: 200,
+                  margin: const EdgeInsets.fromLTRB(4, 0, 48, 4),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                    ),
+                    color: MyColors.badge,
                   ),
-                  color: MyColors.badge,
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(13, 0, 0, 18),
-                  child: Text(
-                    "${done.toString()} / ${list.tasks.length.toString()}",
-                    style: const TextStyle(
-                      color: MyColors.lightTxt,
-                      fontSize: 12,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(13, 0, 0, 18),
+                    child: Text(
+                      "${done.toString()} / ${list.tasks.length.toString()}",
+                      style: const TextStyle(
+                        color: MyColors.lightTxt,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -165,7 +175,7 @@ class _TodoCardState extends State<TodoCard> {
               style: const TextStyle(
                 color: MyColors.lightTxt,
                 fontSize: 18,
-                fontFamily: 'monospace',
+                fontFamily: 'roboto',
               ),
             ),
           ),
