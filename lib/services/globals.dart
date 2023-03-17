@@ -11,6 +11,7 @@ class MyColors {
   static const Color darkTxt = Colors.black87;
 
   static const Color uiButton = Colors.black54;
+  static const Color removeBadge = Color(0xbb444444);
 
   static const Color transparent = Color(0x00ffffff);
 

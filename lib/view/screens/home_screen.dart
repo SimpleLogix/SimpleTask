@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isDragged = false;
   late List<DraggableGridItem> draggableItems;
   PageController controller = Get.put(PageController(initialPage: 0));
-
+  ScrollController gridController = ScrollController();
   @override
   Widget build(BuildContext context) {
     //? These are the draggable items going in the sliver for the main home screen
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       profile.todoLists.removeAt(index);
                     });
                   },
-                  onLongPress: () {},
+                  
                 ),
               ),
             ));
@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isOnlyLongPress: false,
       dragFeedback: feedback,
       dragPlaceHolder: placeholder,
+      controller: gridController,
     );
 
     // create pages consisting of home, todo's, and add screen

@@ -9,12 +9,10 @@ import 'package:badges/badges.dart' as badges;
 class TodoCard extends StatefulWidget {
   bool isEditModeOn = false;
   final TodoList list;
-  final VoidCallback onLongPress;
   final VoidCallback onRemoveTodo;
   TodoCard({
     super.key,
     required this.list,
-    required this.onLongPress,
     required this.onRemoveTodo,
     required this.isEditModeOn,
   });
@@ -37,12 +35,12 @@ class _TodoCardState extends State<TodoCard> {
     }
 
     return badges.Badge(
-      badgeContent: Icon(Icons.remove_rounded),
+      badgeContent: const Icon(Icons.close_rounded),
       onTap: widget.onRemoveTodo,
       showBadge: widget.isEditModeOn,
       position: badges.BadgePosition.topEnd(end: -5, top: -5),
       badgeStyle: const badges.BadgeStyle(
-        badgeColor: MyColors.badge,
+        badgeColor: MyColors.removeBadge,
         padding: EdgeInsets.all(6),
       ),
       child: InkWell(
@@ -58,9 +56,17 @@ class _TodoCardState extends State<TodoCard> {
               duration: duration,
               curve: (index < 3) ? Curves.easeIn : Curves.linear,
             );
+          } else {
+            setState(() {
+              widget.isEditModeOn = false;
+            });
           }
         },
-        onLongPress: widget.onLongPress,
+        onLongPress: () {
+          setState(() {
+            widget.isEditModeOn = !widget.isEditModeOn;
+          });
+        },
         highlightColor: MyColors.pressed,
         borderRadius: const BorderRadius.all(Radius.circular(18)),
         child: Ink(
