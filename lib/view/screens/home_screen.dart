@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Profile profile = Get.find<Profile>();
   bool isDragged = false;
   late List<DraggableGridItem> draggableItems;
-  PageController controller = Get.put(PageController(initialPage: 0));
+  PageController controller = Get.put(PageController(initialPage: 6));
   ScrollController gridController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
       callback: (todo, isUnique) {
         setState(() {
           FocusScope.of(context).unfocus();
-          if (isUnique) {
+          if (isUnique && todo.name.isNotEmpty) {
             //save to services and rebuild ui
             profile.todoLists.add(todo);
             MyServices.createTodoList(todo);

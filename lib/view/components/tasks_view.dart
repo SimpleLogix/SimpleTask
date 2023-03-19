@@ -25,7 +25,7 @@ class _TasksViewState extends State<TasksView> {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-
+    pressedTasks = List.generate(widget.list.tasks.length, (index) => false);
     final Column tasks = Column(
         children: List.generate(widget.list.tasks.length, (index) {
       //? current task in index & the index of the todo list

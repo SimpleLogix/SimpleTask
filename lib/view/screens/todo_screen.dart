@@ -36,7 +36,6 @@ class _TodoScreenState extends State<TodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TodoList list = widget.list;
     final size = MediaQuery.of(context).size;
     isTextformEnabled ? textNode.requestFocus() : null;
 
@@ -95,8 +94,8 @@ class _TodoScreenState extends State<TodoScreen> {
                             style: TextStyle(color: MyColors.uiButton),
                           ),
                           Icon(
-                            list.icon,
-                            color: list.color,
+                            widget.list.icon,
+                            color: widget.list.color,
                           ),
                         ],
                       ),
@@ -135,11 +134,11 @@ class _TodoScreenState extends State<TodoScreen> {
                               isDone: false,
                               isImportant: false,
                             );
-                            final idx = profile.todoLists.indexOf(list);
-                            list.tasks.add(task);
-                            profile.todoLists[idx] = list;
+                            final idx = profile.todoLists.indexOf(widget.list);
+                            widget.list.tasks.add(task);
+                            profile.todoLists[idx] = widget.list;
                             inputController.text = "";
-                            MyServices.updateTodoList(list);
+                            MyServices.updateTodoList(widget.list);
                           }
                         });
                       },
@@ -160,20 +159,20 @@ class _TodoScreenState extends State<TodoScreen> {
                       children: [
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: list.color,
+                          color: widget.list.color,
                           size: 12,
                         ),
                         Text(
                           "Swipe down to add a task",
                           style: TextStyle(
-                            color: list.color,
+                            color: widget.list.color,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
                         ),
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: list.color,
+                          color: widget.list.color,
                           size: 12,
                         ),
                       ],
@@ -183,7 +182,7 @@ class _TodoScreenState extends State<TodoScreen> {
               ),
             ),
             Expanded(
-              child: TasksView(list: list),
+              child: TasksView(list: widget.list),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -220,9 +219,9 @@ class _TodoScreenState extends State<TodoScreen> {
                       color: MyColors.uiButton,
                     )),
                 Text(
-                  list.name,
+                  widget.list.name,
                   style: TextStyle(
-                    color: list.color,
+                    color: widget.list.color,
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),

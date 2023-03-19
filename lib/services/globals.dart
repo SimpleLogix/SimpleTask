@@ -61,7 +61,6 @@ class MyWidgets {
     MyColors.Alizarin,
     MyColors.Pomegranate,
     MyColors.Clouds,
-    MyColors.Silver,
     MyColors.Concrete,
     MyColors.Asbestos,
     MyColors.MidnightBlue,
@@ -71,6 +70,10 @@ class MyWidgets {
     MyColors.BelizeHole,
     MyColors.SteelBlue,
     MyColors.Amethyst,
+    MyColors.Asbestos,
+    MyColors.MidnightBlue,
+    MyColors.SunFlower,
+    MyColors.Orange,
   ];
   static List<Widget> colors = List.generate(
     colorList.length,
@@ -87,7 +90,7 @@ class MyWidgets {
   );
 
   static List<IconData> iconsData = [
-    Icons.person,
+    Icons.person_outlined,
     Icons.rocket_launch_outlined,
     Icons.house_outlined,
     Icons.shopping_cart_outlined,
@@ -95,7 +98,34 @@ class MyWidgets {
     Icons.favorite_border_rounded,
     Icons.school_outlined,
     Icons.work_outline_rounded,
-    Icons.music_note_rounded
+    Icons.music_note_rounded,
+    Icons.lightbulb_outline_rounded,
+    Icons.calendar_month_outlined,
+    Icons.delete_outlined,
+    Icons.ramen_dining_outlined,
+    Icons.card_giftcard_rounded,
+    Icons.cloudy_snowing,
+    Icons.check,
+    Icons.access_time,
+    Icons.calendar_today,
+    Icons.notifications_outlined,
+    Icons.priority_high,
+    Icons.settings,
+    Icons.lightbulb_outline,
+    Icons.edit,
+    Icons.send,
+    Icons.cloud_outlined,
+    Icons.battery_alert,
+    Icons.camera_alt,
+    Icons.mic,
+    Icons.location_on,
+    Icons.assignment_turned_in,
+    Icons.assignment,
+    Icons.bar_chart,
+    Icons.dashboard,
+    Icons.face,
+    Icons.help,
+    Icons.home,
   ];
   static List<Icon> icons =
       List.generate(iconsData.length, (index) => Icon(iconsData[index]));
