@@ -19,9 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Profile profile = Get.find<Profile>();
-  bool isDragged = false;
   late List<DraggableGridItem> draggableItems;
-  PageController controller = Get.put(PageController(initialPage: 6));
+  PageController controller = Get.put(PageController(initialPage: 0));
   ScrollController gridController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -30,13 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
         profile.todoLists.length,
         (index) => DraggableGridItem(
               isDraggable: true,
-              dragCallback: (context, i) {
-                if (i != isDragged) {
-                  setState(() {
-                    isDragged = i;
-                  });
-                }
-              },
               child: Material(
                 color: MyColors.transparent,
                 child: TodoCard(
@@ -48,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       profile.todoLists.removeAt(index);
                     });
                   },
-                  
                 ),
               ),
             ));
@@ -95,18 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(child: gridView),
-              isDragged
-                  ? OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: MyColors.uiButton,
-                          shape: const StadiumBorder()),
-                      child: const Text(
-                        "done",
-                        style: TextStyle(color: MyColors.lightTxt),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -131,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MyServices.createTodoList(todo);
             controller.animateToPage(
               profile.todoLists.length,
-              duration: const Duration(milliseconds: 1500),
+              duration: const Duration(milliseconds: 1300),
               curve: Curves.linear,
             );
           }

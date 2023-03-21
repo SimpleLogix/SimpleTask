@@ -26,12 +26,12 @@ class _AddCardState extends State<AddCard> {
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(18)),
           child: Container(
-            color: MyColors.badge,
+            decoration: BoxDecoration(gradient: MyColors.greyBorder),
             padding: const EdgeInsets.all(0.1),
             child: Stack(
               fit: StackFit.expand,
-              children: const [
-                Padding(
+              children:  [
+                const Padding(
                   padding: EdgeInsets.all(8),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -39,13 +39,13 @@ class _AddCardState extends State<AddCard> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(14)),
-                    child: ColoredBox(color: Colors.grey),
+                    borderRadius: const BorderRadius.all(Radius.circular(14)),
+                    child: DecoratedBox(decoration: BoxDecoration(gradient: MyColors.grey),),
                   ),
                 ),
-                Center(
+                const Center(
                     child: Icon(
                   Icons.add_rounded,
                   size: 64,

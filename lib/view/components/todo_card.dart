@@ -93,13 +93,20 @@ class _TodoCardState extends State<TodoCard> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(12))),
                         color: list.color,
-                        child: Center(
-                          child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(15, 15, 15, 45),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: splitText(list.name))),
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              gradient: MyColors.gradients[list.color],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                          child: Center(
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 45),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: splitText(list.name))),
+                          ),
                         ),
                       ),
                     ),

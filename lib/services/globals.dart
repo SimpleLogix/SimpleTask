@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:taskmate/model/todo_list.dart';
 
@@ -6,7 +8,6 @@ import '../model/task.dart';
 class MyColors {
   // colors for pallete
   static const Color bg = Silver;
-  static const Color main = Color(0xff2980B9);
   static const Color lightTxt = Color(0xffECF0F1);
   static const Color darkTxt = Colors.black87;
 
@@ -26,20 +27,150 @@ class MyColors {
   static const Color Nephritis = Color(0xff27AE60);
   static const Color BelizeHole = Color(0xff3498DB);
   static const Color SteelBlue = Color(0xff2980B9);
-  static const Color Amethyst = Color(0xff9B59B6);
   static const Color Wisteria = Color(0xff8E44AD);
-  static const Color WetAsphalt = Color(0xff34495E);
   static const Color MidnightBlue = Color(0xff2C3E50);
   static const Color SunFlower = Color(0xffF1C40F);
-  static const Color Orange = Color(0xffF39C12);
   static const Color Carrot = Color(0xffE67E22);
-  static const Color Pumpkin = Color(0xffD35400);
-  static const Color Alizarin = Color(0xffE74C3C);
   static const Color Pomegranate = Color(0xffC0392B);
-  static const Color Clouds = Color(0xffECF0F1);
   static const Color Silver = Color(0xffBDC3C7);
-  static const Color Concrete = Color(0xff95A5A6);
   static const Color Asbestos = Color(0xff7F8C8D);
+
+  static const Color TurquoiseLight = Color(0xff58D3F7);
+  static const Color NephritisLight = Color(0xff61E294);
+  static const Color BelizeHoleLight = Color(0xff66B3FF);
+  static const Color SteelBlueLight = Color(0xff5AC8FA);
+  static const Color MidnightBlueLight = Color(0xff53A8D3);
+  static const Color WisteriaLight = Color(0xffB793D4);
+  static const Color SunFlowerLight = Color(0xffFFE270);
+  static const Color CarrotLight = Color(0xffF3C563);
+  static const Color PomegranateLight = Color(0xffE08283);
+  static const Color AsbestosLight = Color(0xffA2AFD0);
+
+  static LinearGradient greyBorder = LinearGradient(
+    colors: [
+      Colors.grey[400]!,
+      Colors.grey[500]!,
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0.0, 1.0],
+    tileMode: TileMode.clamp,
+    transform: GradientRotation(160 * (pi / 180)),
+  );
+
+  static LinearGradient grey = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomCenter,
+    colors: [
+      Colors.grey[350]!,
+      Colors.grey[400]!,
+      Colors.grey,
+      Colors.grey[600]!,
+    ],
+    stops: [0.0, 0.25, 0.55, 1.0],
+    tileMode: TileMode.clamp,
+    transform: GradientRotation(160 * (pi / 180)),
+  );
+
+  //? map that maps each color to a corresponding gradient
+  static Map<Color, Gradient> gradients = {
+    Turquoise: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Turquoise, TurquoiseLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    GreenSea: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [GreenSea, Turquoise],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Emerald: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Emerald, Turquoise],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Nephritis: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Nephritis, NephritisLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    BelizeHole: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [BelizeHole, BelizeHoleLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    SteelBlue: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [SteelBlue, SteelBlueLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Wisteria: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Wisteria, WisteriaLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    MidnightBlue: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [MidnightBlue, MidnightBlueLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    SunFlower: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [SunFlower, CarrotLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Carrot: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Carrot, CarrotLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Pomegranate: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Pomegranate, PomegranateLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+    Asbestos: const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Asbestos, AsbestosLight],
+      stops: [0.0, 1.0],
+      tileMode: TileMode.clamp,
+      transform: GradientRotation(160 * (pi / 180)),
+    ),
+  };
 }
 
 class MyWidgets {
@@ -50,30 +181,12 @@ class MyWidgets {
     MyColors.Nephritis,
     MyColors.BelizeHole,
     MyColors.SteelBlue,
-    MyColors.Amethyst,
     MyColors.Wisteria,
-    MyColors.WetAsphalt,
     MyColors.MidnightBlue,
     MyColors.SunFlower,
-    MyColors.Orange,
     MyColors.Carrot,
-    MyColors.Pumpkin,
-    MyColors.Alizarin,
     MyColors.Pomegranate,
-    MyColors.Clouds,
-    MyColors.Concrete,
     MyColors.Asbestos,
-    MyColors.MidnightBlue,
-    MyColors.SunFlower,
-    MyColors.Orange,
-    MyColors.Nephritis,
-    MyColors.BelizeHole,
-    MyColors.SteelBlue,
-    MyColors.Amethyst,
-    MyColors.Asbestos,
-    MyColors.MidnightBlue,
-    MyColors.SunFlower,
-    MyColors.Orange,
   ];
   static List<Widget> colors = List.generate(
     colorList.length,

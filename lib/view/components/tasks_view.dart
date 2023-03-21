@@ -16,22 +16,32 @@ class TasksView extends StatefulWidget {
 
 class _TasksViewState extends State<TasksView> {
   Profile profile = Get.find<Profile>();
-  late List<bool> pressedTasks;
-  @override
-  void initState() {
-    pressedTasks = List.generate(widget.list.tasks.length, (index) => false);
-  }
+  late List<bool> pressedTasks =
+      List.generate(widget.list.tasks.length, (index) => false);
 
   @override
   Widget build(BuildContext context) {
+    // update list with new tasks without rebuilding the list and losing old values
+    while (pressedTasks.length < widget.list.tasks.length) {
+      pressedTasks.add(false);
+    }
     final _width = MediaQuery.of(context).size.width;
-    pressedTasks = List.generate(widget.list.tasks.length, (index) => false);
+    final list = widget.list;
+    if (list.tasks.length > 1) {
+      list.tasks.sort((a, b) {
+        if (b.isDone) {
+          return -1;
+        }
+        return 1;
+      });
+    }
+
+    final listIndex = profile.todoLists.indexOf(list);
+
     final Column tasks = Column(
         children: List.generate(widget.list.tasks.length, (index) {
       //? current task in index & the index of the todo list
-      final list = widget.list;
       final task = list.tasks[index];
-      final listIndex = profile.todoLists.indexOf(list);
       //? calculate the position of the strikethrough line based on text size
       final rightPosition = (task.name.length >= 40)
           ? _width
@@ -59,6 +69,7 @@ class _TasksViewState extends State<TasksView> {
             Padding(
                 padding: const EdgeInsets.all(10),
                 child: pressedTasks[index]
+                    //? if longpressed, show X instead of radio button
                     ? InkWell(
                         onTap: () {
                           setState(() {

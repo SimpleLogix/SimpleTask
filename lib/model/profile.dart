@@ -11,4 +11,5 @@ class Profile extends GetxController {
   factory Profile.empty() {
     return Profile(todoLists: []);
   } 
+
 }

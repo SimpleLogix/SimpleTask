@@ -22,6 +22,7 @@ class _TodoScreenState extends State<TodoScreen> {
   final controller = Get.find<PageController>();
   TextEditingController inputController = TextEditingController();
   late FocusNode textNode; // focus node to find text input to activate
+  // get index of current to do list
   //? delta x and y offset for user swipe detection
   //? easier to detect when and where user is swiping from and respond accordingly
   double dy = 0;
@@ -36,6 +37,8 @@ class _TodoScreenState extends State<TodoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final list = widget.list;
+    final idx = profile.todoLists.indexOf(list);
     final size = MediaQuery.of(context).size;
     isTextformEnabled ? textNode.requestFocus() : null;
 
@@ -94,8 +97,8 @@ class _TodoScreenState extends State<TodoScreen> {
                             style: TextStyle(color: MyColors.uiButton),
                           ),
                           Icon(
-                            widget.list.icon,
-                            color: widget.list.color,
+                            list.icon,
+                            color: list.color,
                           ),
                         ],
                       ),
@@ -129,16 +132,20 @@ class _TodoScreenState extends State<TodoScreen> {
                           dy = 0;
                           // save task
                           if (value.isNotEmpty) {
+                            debugPrint("updating");
                             final task = Task(
                               name: value,
                               isDone: false,
                               isImportant: false,
                             );
-                            final idx = profile.todoLists.indexOf(widget.list);
-                            widget.list.tasks.add(task);
-                            profile.todoLists[idx] = widget.list;
+
+                            //TODO: figure this mess out
+                            debugPrint("old: ${list.tasks.length.toString()}");
+                            list.tasks.add(task);
+                            profile.todoLists[idx] = list;
+                            debugPrint("new: ${list.tasks.length.toString()}");
                             inputController.text = "";
-                            MyServices.updateTodoList(widget.list);
+                            MyServices.updateTodoList(list);
                           }
                         });
                       },
@@ -159,20 +166,20 @@ class _TodoScreenState extends State<TodoScreen> {
                       children: [
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: widget.list.color,
+                          color: list.color,
                           size: 12,
                         ),
                         Text(
                           "Swipe down to add a task",
                           style: TextStyle(
-                            color: widget.list.color,
+                            color: list.color,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
                         ),
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: widget.list.color,
+                          color: list.color,
                           size: 12,
                         ),
                       ],
@@ -182,7 +189,7 @@ class _TodoScreenState extends State<TodoScreen> {
               ),
             ),
             Expanded(
-              child: TasksView(list: widget.list),
+              child: TasksView(list: list),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,9 +226,9 @@ class _TodoScreenState extends State<TodoScreen> {
                       color: MyColors.uiButton,
                     )),
                 Text(
-                  widget.list.name,
+                  list.name,
                   style: TextStyle(
-                    color: widget.list.color,
+                    color: list.color,
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),

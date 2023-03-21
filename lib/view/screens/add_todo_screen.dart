@@ -20,7 +20,7 @@ class AddTodoScreen extends StatefulWidget {
 class _AddTodoScreenState extends State<AddTodoScreen> {
   static final rng = Random();
   int iconIdx = 0;
-  int colorIdx = rng.nextInt(MyWidgets.iconsData.length);
+  int colorIdx = rng.nextInt(MyWidgets.colorList.length);
   final controller = Get.find<PageController>();
   final user = Get.find<Profile>();
   String errTxt = "";
@@ -51,9 +51,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               customBorder: const CircleBorder(),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: (iconIdx == index)
-                      ? MyWidgets.colorList[colorIdx]
-                      : MyColors.transparent,
+                  gradient: (iconIdx == index)
+                      ? MyColors.gradients[MyWidgets.colorList[colorIdx]]
+                      : null,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(MyWidgets.iconsData[index]),
@@ -75,7 +75,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           child: DecoratedBox(
             decoration: BoxDecoration(
               border: Border.all(color: MyColors.uiButton, width: 0.5),
-              color: MyWidgets.colorList[index],
+              gradient: MyColors.gradients[MyWidgets.colorList[index]],
               shape: BoxShape.circle,
             ),
             child: SizedBox(
@@ -246,10 +246,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       padding: const EdgeInsets.all(8),
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
-                      crossAxisCount: 3,
+                      crossAxisCount: 2,
                       childAspectRatio: 1,
-                      crossAxisSpacing: 4,
-                      mainAxisSpacing: 4,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
                       children: colors,
                     ),
                   ),
@@ -281,19 +281,17 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                 height: 90,
                 decoration: BoxDecoration(
-                    color: MyWidgets.colorList[colorIdx],
+                    gradient: MyColors.gradients[MyWidgets.colorList[colorIdx]],
                     border: Border.all(color: MyColors.uiButton)),
                 child: Center(
                   child: Text(
                     "Create",
                     style: TextStyle(
                         fontSize: 36,
-                        color:
-                            (MyWidgets.colorList[colorIdx] == MyColors.Clouds ||
-                                    MyWidgets.colorList[colorIdx] ==
-                                        MyColors.SunFlower)
-                                ? Colors.black87
-                                : MyColors.lightTxt,
+                        color: (MyWidgets.colorList[colorIdx] ==
+                                MyColors.SunFlower)
+                            ? Colors.black87
+                            : MyColors.lightTxt,
                         fontFamily: 'roboto'),
                   ),
                 ),
