@@ -185,14 +185,31 @@ class _TodoCardState extends State<TodoCard> {
         res.add(Flexible(
           child: FittedBox(
             fit: BoxFit.cover,
-            child: Text(
-              word,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: MyColors.lightTxt,
-                fontSize: 18,
-                fontFamily: 'roboto',
-              ),
+            child: Stack(
+              children: [
+                Text(
+                  word,
+                  textAlign: TextAlign.center,
+                  
+                  style: TextStyle(
+                     foreground: Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 1.4
+                            ..color = Colors.black87,
+                    fontSize: 24,
+                    fontFamily: 'roboto',
+                  ),
+                ),
+                Text(
+                  word,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: MyColors.lightTxt,
+                    fontSize: 24,
+                    fontFamily: 'roboto',
+                  ),
+                ),
+              ],
             ),
           ),
         ));

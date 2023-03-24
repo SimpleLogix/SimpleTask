@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             controller.animateToPage(
-              profile.todoLists.length,
+              profile.todoLists.indexOf(profile.editingList!) + 1,
               duration: const Duration(milliseconds: 800),
               curve: Curves.linear,
             );
