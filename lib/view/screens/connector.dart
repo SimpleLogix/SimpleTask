@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:taskmate/model/profile.dart';
 import 'package:taskmate/services/services.dart';
@@ -21,15 +22,14 @@ class _ConnectorState extends State<Connector> {
     return FutureBuilder(
         future: MyServices.getTodoLists(),
         builder: (context, snap) {
-          if (snap.connectionState == ConnectionState.waiting) {
-            return const LoadingScreen();
-          } else {
-            
+          if (snap.connectionState == ConnectionState.done) {
             //? GetX controller stuff
             Profile profile = Profile(todoLists: snap.data!);
             Get.put(profile, permanent: true);
-            
+            FlutterNativeSplash.remove();
             return const HomeScreen();
+          } else {
+            return const LoadingScreen();
           }
         });
   }
