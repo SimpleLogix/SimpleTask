@@ -5,16 +5,12 @@ class ShakeWidget extends StatefulWidget {
   const ShakeWidget({
     Key? key,
     this.duration = const Duration(milliseconds: 300),
-    this.deltaX = 4,
-    this.deltaY = 4,
     this.curve = Curves.linear,
     this.enabled = false,
     required this.child,
   }) : super(key: key);
 
   final Duration duration;
-  final double deltaX;
-  final double deltaY;
   final Widget child;
   final Curve curve;
   final bool enabled;

@@ -3,15 +3,16 @@ import 'package:get/get.dart';
 import 'package:taskmate/model/task.dart';
 import 'package:taskmate/model/todo_list.dart';
 import 'package:taskmate/services/globals.dart';
-import 'package:taskmate/services/service.dart';
+import 'package:taskmate/services/services.dart';
 import 'package:taskmate/view/components/tasks_view.dart';
 import '../../model/profile.dart';
 
 /// displays the selected to do list but also has access to the other todo's in a
 /// page view for easy seamless swapping between pages
 class TodoScreen extends StatefulWidget {
-  TodoList list;
-  TodoScreen({super.key, required this.list});
+  final TodoList list;
+  final VoidCallback callback;
+  const TodoScreen({super.key, required this.list, required this.callback});
 
   @override
   State<TodoScreen> createState() => _TodoScreenState();
@@ -29,6 +30,7 @@ class _TodoScreenState extends State<TodoScreen> {
   double dx = 0;
   final threshold = 50;
   bool isTextformEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -94,11 +96,11 @@ class _TodoScreenState extends State<TodoScreen> {
                         children: [
                           const Text(
                             "Add a New Task",
-                            style: TextStyle(color: MyColors.uiButton),
+                            style: TextStyle(color: Colors.black87),
                           ),
                           Icon(
                             list.icon,
-                            color: list.color,
+                            color: MyColors.secondaries[list.color],
                           ),
                         ],
                       ),
@@ -132,20 +134,15 @@ class _TodoScreenState extends State<TodoScreen> {
                           dy = 0;
                           // save task
                           if (value.isNotEmpty) {
-                            debugPrint("updating");
                             final task = Task(
                               name: value,
                               isDone: false,
                               isImportant: false,
                             );
-
-                            //TODO: figure this mess out
-                            debugPrint("old: ${list.tasks.length.toString()}");
-                            list.tasks.add(task);
+                            list.tasks.insert(0, task);
                             profile.todoLists[idx] = list;
-                            debugPrint("new: ${list.tasks.length.toString()}");
                             inputController.text = "";
-                            MyServices.updateTodoList(list);
+                            MyServices.updateTodoList(list, list);
                           }
                         });
                       },
@@ -166,20 +163,20 @@ class _TodoScreenState extends State<TodoScreen> {
                       children: [
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: list.color,
+                          color: MyColors.secondaries[list.color],
                           size: 12,
                         ),
                         Text(
                           "Swipe down to add a task",
                           style: TextStyle(
-                            color: list.color,
+                            color: MyColors.secondaries[list.color],
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
                         ),
                         Icon(
                           Icons.keyboard_double_arrow_down_rounded,
-                          color: list.color,
+                          color: MyColors.secondaries[list.color],
                           size: 12,
                         ),
                       ],
@@ -225,10 +222,23 @@ class _TodoScreenState extends State<TodoScreen> {
                       size: 32,
                       color: MyColors.uiButton,
                     )),
+                IconButton(
+                    onPressed: () {
+                      widget.callback();
+                      setState(() {
+                        dy = 0;
+                        inputController.text = "";
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.settings_rounded,
+                      size: 28,
+                      color: MyColors.uiButton,
+                    )),
                 Text(
                   list.name,
                   style: TextStyle(
-                    color: list.color,
+                    color: MyColors.secondaries[list.color],
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),

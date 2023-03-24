@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_draggable_gridview/flutter_draggable_gridview.dart';
 import 'package:get/get.dart';
 import 'package:taskmate/services/globals.dart';
-import 'package:taskmate/services/service.dart';
+import 'package:taskmate/services/services.dart';
 import 'package:taskmate/view/screens/add_todo_screen.dart';
 import 'package:taskmate/view/components/add_card.dart';
 import 'package:taskmate/view/components/todo_card.dart';
 import 'package:taskmate/view/screens/todo_screen.dart';
-
 import '../../model/profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,11 +16,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+/// HomeScreen is actually a PageView that holds the actual HomePage,
+/// The 'add todo screen' as well as the actual todo screens in between
+/// This is to allow for smoother animations and swipe navigation
 class _HomeScreenState extends State<HomeScreen> {
   Profile profile = Get.find<Profile>();
-  late List<DraggableGridItem> draggableItems;
   PageController controller = Get.put(PageController(initialPage: 0));
   ScrollController gridController = ScrollController();
+  late List<DraggableGridItem> draggableItems;
+  bool reachedEnd = false;
   @override
   Widget build(BuildContext context) {
     //? These are the draggable items going in the sliver for the main home screen
@@ -94,32 +97,82 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // add the todo's and add screen
     //? This is the actual displayed screens/pages of the selected todo
-    List<Widget> todoPages = List.generate(profile.todoLists.length,
-        (index) => TodoScreen(list: profile.todoLists[index]));
+    List<Widget> todoPages = List.generate(
+        profile.todoLists.length,
+        (index) => TodoScreen(
+              list: profile.todoLists[index],
+              callback: () {
+                setState(() {
+                  profile.isEditing = true;
+                  profile.editingList = profile.todoLists[index];
+                });
+                controller.animateToPage(profile.todoLists.length + 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear);
+              },
+            ));
     pages += todoPages;
     pages.add(AddTodoScreen(
       //? The reason for having the callback in the homescreen instead of
       //? the todo screen is to set the state of the homescreen after adding
       //? the new to do list; can't do that if these functions are in HS.
-      callback: (todo, isUnique) {
+      createCallback: (todo) {
         setState(() {
           FocusScope.of(context).unfocus();
-          if (isUnique && todo.name.isNotEmpty) {
+
+          if (todo.name.isNotEmpty) {
             //save to services and rebuild ui
-            profile.todoLists.add(todo);
-            MyServices.createTodoList(todo);
+            if (profile.isEditing) {
+              final oldTodo = profile
+                  .todoLists[profile.todoLists.indexOf(profile.editingList!)];
+              //save tasks
+              todo.tasks = oldTodo.tasks;
+
+              // save to do list internally
+              profile.todoLists[
+                  profile.todoLists.indexOf(profile.editingList!)] = todo;
+              MyServices.updateTodoList(todo, oldTodo);
+            } else {
+              // user is creating a new list
+              profile.todoLists.add(todo);
+              MyServices.createTodoList(todo);
+            }
+
             controller.animateToPage(
               profile.todoLists.length,
-              duration: const Duration(milliseconds: 1300),
+              duration: const Duration(milliseconds: 800),
               curve: Curves.linear,
             );
           }
         });
       },
     ));
+    // keep track of page swipe after going to edit lsit
     return PageView(
       controller: controller,
+      physics: const AlwaysScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
+      onPageChanged: (profile.isEditing)
+          ? (page) {
+              // if the page is the last in the list
+              if (page == profile.todoLists.length + 1) {
+                debugPrint("reached");
+                setState(() {
+                  reachedEnd = true;
+                });
+              }
+
+              // if we reached the end and now the page pointer is not
+              if (reachedEnd && page != profile.todoLists.length + 1) {
+                debugPrint("statement");
+                setState(() {
+                  profile.isEditing = false;
+                  profile.editingList = null;
+                  reachedEnd = false;
+                });
+              }
+            }
+          : null,
       children: pages,
     );
   }

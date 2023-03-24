@@ -21,6 +21,7 @@ class TodoCard extends StatefulWidget {
   State<TodoCard> createState() => _TodoCardState();
 }
 
+/// To do Card is the card shown on the homepage with a title, color, & icon
 class _TodoCardState extends State<TodoCard> {
   PageController controller = Get.put(PageController(initialPage: 0));
   @override
@@ -34,6 +35,7 @@ class _TodoCardState extends State<TodoCard> {
       }
     }
 
+    //? InkWell wrapped in a badge to show the remove option on long press
     return badges.Badge(
       badgeContent: const Icon(Icons.close_rounded),
       onTap: widget.onRemoveTodo,
@@ -47,6 +49,7 @@ class _TodoCardState extends State<TodoCard> {
         onTap: () {
           if (!widget.isEditModeOn) {
             // get user todo's and find index of selected todo
+            //? This is here b/c its only necessary to call when removing a list
             Profile user = Get.find<Profile>();
             final int index = user.todoLists.indexOf(list) + 1;
             const Duration duration = Duration(milliseconds: 500);

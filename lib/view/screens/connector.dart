@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskmate/model/profile.dart';
-import 'package:taskmate/services/service.dart';
+import 'package:taskmate/services/services.dart';
 import 'package:taskmate/view/screens/home_screen.dart';
 
 import '../components/loading_screen.dart';

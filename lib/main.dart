@@ -9,8 +9,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,8 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'TaskMate',
       theme: ThemeData(
         useMaterial3: true,
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: Colors.transparent,
+        ),
         fontFamily: 'roboto',
-        primarySwatch: Colors.blue,
       ),
       home: const Scaffold(
           backgroundColor: MyColors.bg,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/services/globals.dart';
 
 class AddCard extends StatefulWidget {
-  VoidCallback func;
-  AddCard({super.key, required this.func});
+  final VoidCallback func;
+  const AddCard({super.key, required this.func});
 
   @override
   State<AddCard> createState() => _AddCardState();

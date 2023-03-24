@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskmate/model/todo_list.dart';
 
 class MyServices {
-  // creates or updates a pre-existing to list in the docs
+  //? creates or updates a pre-existing to list in the docs
   static void createTodoList(TodoList list) async {
     // connect to shared prefs
     final prefs = await SharedPreferences.getInstance();
@@ -26,7 +26,7 @@ class MyServices {
     }
   }
 
-  // get list of todo list names and files:
+  //? get list of todo list names and files:
   static Future<List<TodoList>> getTodoLists() async {
     // list to be returned
     List<TodoList> todoLists = [];
@@ -53,6 +53,7 @@ class MyServices {
     }
   }
 
+  //? removes a todo list from shared prefs and user docs
   static void removeTodoList(TodoList list) async {
     // connect to shared prefs
     final prefs = await SharedPreferences.getInstance();
@@ -72,39 +73,34 @@ class MyServices {
     file.delete();
   }
 
-  static void updateTodoList(TodoList list) async {
+  //? works similar to adding a list but no need to access shared prefs
+  static void updateTodoList(TodoList newList, TodoList oldList) async {
     // Find the local path of the directories
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     // encode to do list and write to file
-    final jsonString = json.encode(list.toMap());
-    File file = File('$path/${list.name}.json');
+    final jsonString = json.encode(newList.toMap());
+    File file = File('$path/${oldList.name}.json');
     file.writeAsStringSync(jsonString);
+    //? on name change update file name
+    if (newList.name != oldList.name) {
+      final newFile = File('$path/${newList.name}.json');
+      await file.rename(newFile.path);
+      file.writeAsStringSync(jsonString);
+      // connect to shared prefs
+      final prefs = await SharedPreferences.getInstance();
+      List<String> names = prefs.getStringList("todoListNames")!;
+      // update name in prefs
+      names[names.indexOf(oldList.name)] = newList.name;
+      prefs.setStringList("todoListNames", names);
+    }
   }
 
+  //? updates the order of lists in shared prefs without touching user docs
   static void updateTodoListOrder(List<TodoList> lists) async {
     // connect to shared prefs
     final prefs = await SharedPreferences.getInstance();
     final names = lists.map((list) => list.name).toList();
     prefs.setStringList("todoListNames", names);
-  }
-
-  //! debug command to clear all files and prefs
-  static void clear() async {
-    // ref
-    final prefs = await SharedPreferences.getInstance();
-    final directory = await getApplicationDocumentsDirectory();
-    final path = directory.path;
-
-    final todos = prefs.getStringList("todoListNames");
-    if (todos != null) {
-      for (String todo in todos) {
-        File file = File('$path/$todo.json');
-        file.delete();
-      }
-    }
-
-    // del
-    prefs.clear();
   }
 }
